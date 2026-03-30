@@ -1,0 +1,496 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+/* ── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #010b13;
+  color: #00ff88;
+  font-family: 'Share Tech Mono', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #010b13; }
+::-webkit-scrollbar-thumb { background: #00ff8866; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #00ff88; }
+
+/* ── Scanlines + Grid ────────────────────────────────────────────────────── */
+.scanline {
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 2px,
+    rgba(0,255,136,.012) 2px, rgba(0,255,136,.012) 4px
+  );
+}
+.grid-bg {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,255,136,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,136,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── App Shell ───────────────────────────────────────────────────────────── */
+.app {
+  position: relative; z-index: 1;
+  max-width: 1440px; margin: 0 auto;
+  padding: 20px 24px;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.header {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid rgba(0,255,136,.25);
+  padding-bottom: 16px; margin-bottom: 24px;
+  flex-wrap: wrap; gap: 12px;
+}
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px; font-weight: 900;
+  color: #00ff88;
+  text-shadow: 0 0 24px rgba(0,255,136,.5);
+  letter-spacing: 4px;
+}
+.logo-accent { color: #ff3860; }
+.logo-sub {
+  font-size: 9px; letter-spacing: 5px;
+  color: rgba(0,255,136,.4); margin-top: 3px;
+}
+.header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.pill {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; color: rgba(0,255,136,.6);
+  border: 1px solid rgba(0,255,136,.15);
+  padding: 4px 10px; border-radius: 20px;
+  letter-spacing: 1px;
+}
+.warn-badge {
+  font-size: 10px; color: #ffdd57;
+  border: 1px solid rgba(255,221,87,.3);
+  background: rgba(255,221,87,.07);
+  padding: 4px 10px; border-radius: 20px;
+  letter-spacing: 1px;
+}
+
+/* ── Dot Indicators ─────────────────────────────────────────────────────── */
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  animation: blink 1.5s ease-in-out infinite;
+}
+.dot.green { background: #00ff88; box-shadow: 0 0 8px #00ff88; }
+.dot.red   { background: #ff3860; box-shadow: 0 0 8px #ff3860; }
+.dot.yellow{ background: #ffdd57; box-shadow: 0 0 8px #ffdd57; }
+
+@keyframes blink {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .4; transform: scale(.75); }
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.btn {
+  background: transparent;
+  border: 1px solid rgba(0,255,136,.35);
+  color: #00ff88;
+  padding: 6px 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; letter-spacing: 1px;
+  cursor: pointer; border-radius: 2px;
+  transition: all .2s;
+}
+.btn:hover:not(:disabled) {
+  background: rgba(0,255,136,.1);
+  border-color: #00ff88;
+  box-shadow: 0 0 12px rgba(0,255,136,.2);
+}
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-active  { border-color: #ffdd57 !important; color: #ffdd57 !important; animation: borderPulse 1s infinite; }
+.btn-scanning{ border-color: #ffdd57; color: #ffdd57; animation: borderPulse 1s infinite; }
+.btn-red     { border-color: rgba(255,56,96,.4) !important; color: #ff3860 !important; }
+.btn-red:hover:not(:disabled) { background: rgba(255,56,96,.1) !important; border-color: #ff3860 !important; }
+.btn-link { background: none; border: none; color: rgba(0,255,136,.6); font-family: 'Share Tech Mono', monospace; font-size: 10px; cursor: pointer; letter-spacing: 1px; padding: 0; }
+.btn-link:hover { color: #00ff88; }
+.btn-big {
+  background: transparent;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+  padding: 12px 32px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px; letter-spacing: 3px;
+  cursor: pointer; border-radius: 3px;
+  transition: all .3s;
+  box-shadow: 0 0 20px rgba(0,255,136,.1);
+}
+.btn-big:hover:not(:disabled) {
+  background: rgba(0,255,136,.1);
+  box-shadow: 0 0 32px rgba(0,255,136,.3);
+  transform: translateY(-2px);
+}
+.btn-big:disabled { opacity: .4; cursor: not-allowed; }
+
+@keyframes borderPulse {
+  0%,100% { box-shadow: 0 0 0 rgba(255,221,87,0); }
+  50%      { box-shadow: 0 0 12px rgba(255,221,87,.35); }
+}
+
+/* ── Stats Grid ───────────────────────────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px; margin-bottom: 24px;
+}
+.stat-card {
+  background: rgba(0,255,136,.03);
+  border: 1px solid rgba(0,255,136,.15);
+  border-radius: 4px; padding: 20px;
+  position: relative; overflow: hidden;
+  transition: all .3s;
+}
+.stat-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.stat-card.accent-green::before { background: linear-gradient(90deg, transparent, #00ff88, transparent); }
+.stat-card.accent-red::before   { background: linear-gradient(90deg, transparent, #ff3860, transparent); }
+.stat-card.accent-yellow::before{ background: linear-gradient(90deg, transparent, #ffdd57, transparent); }
+.stat-card.accent-blue::before  { background: linear-gradient(90deg, transparent, #3273dc, transparent); }
+.stat-card:hover { border-color: rgba(0,255,136,.3); background: rgba(0,255,136,.055); transform: translateY(-2px); }
+.stat-label  { font-size: 10px; color: rgba(0,255,136,.45); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.stat-value  { font-family: 'Orbitron', sans-serif; font-size: 34px; font-weight: 700; }
+.stat-value.text-green  { color: #00ff88; text-shadow: 0 0 12px rgba(0,255,136,.4); }
+.stat-value.text-red    { color: #ff3860; text-shadow: 0 0 12px rgba(255,56,96,.4); }
+.stat-value.text-yellow { color: #ffdd57; text-shadow: 0 0 12px rgba(255,221,87,.4); }
+.stat-value.text-blue   { color: #3273dc; text-shadow: 0 0 12px rgba(50,115,220,.4); }
+.stat-sub { font-size: 10px; color: rgba(0,255,136,.35); margin-top: 4px; }
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.main-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+.left-col  { display: flex; flex-direction: column; gap: 20px; }
+
+/* ── Panel ───────────────────────────────────────────────────────────────── */
+.panel {
+  background: rgba(0,255,136,.025);
+  border: 1px solid rgba(0,255,136,.12);
+  border-radius: 4px; overflow: hidden;
+}
+.panel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 8px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(0,255,136,.1);
+  background: rgba(0,255,136,.04);
+}
+.panel-title  { font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 2px; color: #00ff88; }
+.panel-actions{ display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+/* ── Filter Chips ────────────────────────────────────────────────────────── */
+.chip {
+  background: transparent; border: 1px solid rgba(0,255,136,.2);
+  color: rgba(0,255,136,.55); padding: 3px 10px; font-size: 9px;
+  letter-spacing: 1px; border-radius: 20px; cursor: pointer;
+  font-family: 'Share Tech Mono', monospace; transition: all .15s;
+}
+.chip:hover       { border-color: rgba(0,255,136,.5); color: #00ff88; }
+.chip-active      { border-color: #00ff88 !important; color: #00ff88 !important; background: rgba(0,255,136,.08) !important; }
+
+/* ── Loading Bar ─────────────────────────────────────────────────────────── */
+.loading-bar {
+  height: 2px; overflow: hidden;
+  background: rgba(0,255,136,.08);
+}
+.loading-bar::after {
+  content: ''; display: block; height: 100%;
+  background: linear-gradient(90deg, transparent, #00ff88, transparent);
+  animation: slide 1.5s linear infinite;
+}
+@keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+/* ── Empty State ─────────────────────────────────────────────────────────── */
+.empty-state {
+  padding: 48px 24px; text-align: center;
+  color: rgba(0,255,136,.4); font-size: 13px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.empty-icon { font-size: 44px; }
+
+/* ── Table Scroll Wrapper ─────────────────────────────────────────────────── */
+.table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-scroll::-webkit-scrollbar { height: 3px; }
+.table-scroll::-webkit-scrollbar-track { background: #010b13; }
+.table-scroll::-webkit-scrollbar-thumb { background: rgba(0,255,136,.3); border-radius: 2px; }
+
+/* ── My IP Items ─────────────────────────────────────────────────────────── */
+.myip-item { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+
+/* ── Device Table ────────────────────────────────────────────────────────── */
+.device-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.device-table th {
+  text-align: left; padding: 10px 16px;
+  font-size: 9px; letter-spacing: 1.5px;
+  color: rgba(0,255,136,.4);
+  border-bottom: 1px solid rgba(0,255,136,.12);
+  background: rgba(0,255,136,.03);
+}
+.device-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(0,255,136,.055);
+  vertical-align: middle;
+}
+.device-table tr:hover td { background: rgba(0,255,136,.04); cursor: pointer; }
+.device-table tr.row-selected td { background: rgba(255,221,87,.05); border-left: 2px solid #ffdd57; }
+.device-icon { font-size: 18px; }
+.hostname { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Device Detail ───────────────────────────────────────────────────────── */
+.device-detail {
+  margin: 0 20px 16px;
+  padding: 14px 16px;
+  background: rgba(0,255,136,.04);
+  border: 1px solid rgba(0,255,136,.15);
+  border-radius: 3px; font-size: 12px;
+  animation: fadeIn .2s ease;
+}
+.detail-title { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 2px; color: rgba(0,255,136,.5); margin-bottom: 10px; }
+.detail-grid  { display: grid; gap: 6px; }
+.detail-row   { display: flex; justify-content: space-between; gap: 8px; }
+
+/* ── My IP Bar ───────────────────────────────────────────────────────────── */
+.myip-bar {
+  display: flex; gap: 24px; flex-wrap: wrap;
+  padding: 10px 20px;
+  border-top: 1px solid rgba(0,255,136,.08);
+  font-size: 10px; color: rgba(0,255,136,.45);
+}
+.myip-bar b { color: #00ff88; }
+
+/* ── IP Checker ──────────────────────────────────────────────────────────── */
+.ip-checker-row {
+  display: flex; gap: 8px;
+  padding: 14px 20px;
+}
+.ip-input {
+  flex: 1;
+  background: rgba(0,255,136,.04);
+  border: 1px solid rgba(0,255,136,.18);
+  color: #00ff88; padding: 8px 12px;
+  font-family: 'Share Tech Mono', monospace; font-size: 12px;
+  border-radius: 2px; outline: none;
+  transition: border-color .2s;
+}
+.ip-input:focus        { border-color: rgba(0,255,136,.45); }
+.ip-input::placeholder { color: rgba(0,255,136,.3); }
+
+.ip-result {
+  margin: 0 20px 16px;
+  padding: 14px 16px;
+  background: rgba(0,255,136,.03);
+  border: 1px solid rgba(0,255,136,.12);
+  border-radius: 3px; font-size: 12px;
+  animation: fadeIn .25s ease;
+}
+.result-grid { display: grid; gap: 8px; }
+.result-row  { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+
+/* ── Badges ──────────────────────────────────────────────────────────────── */
+.badge { padding: 2px 10px; border-radius: 2px; font-size: 10px; letter-spacing: 1px; }
+.badge-low     { background: rgba(0,255,136,.12); color: #00ff88; border: 1px solid rgba(0,255,136,.3); }
+.badge-high    { background: rgba(255,56,96,.12); color: #ff3860; border: 1px solid rgba(255,56,96,.3); }
+.badge-unknown { background: rgba(255,221,87,.1);  color: #ffdd57; border: 1px solid rgba(255,221,87,.25); }
+
+/* ── Alerts Panel ────────────────────────────────────────────────────────── */
+.alerts-panel { display: flex; flex-direction: column; }
+.alerts-list  { flex: 1; padding: 10px; display: flex; flex-direction: column; gap: 7px; max-height: 520px; overflow-y: auto; }
+.alert-item {
+  padding: 10px 12px; border-radius: 3px;
+  font-size: 11px; line-height: 1.55;
+  border-left: 3px solid;
+  display: flex; flex-direction: column; gap: 4px;
+  animation: slideIn .3s ease;
+}
+.alert-item.sev-warning { background: rgba(255,221,87,.07); border-color: #ffdd57; color: #ffdd57; }
+.alert-item.sev-danger  { background: rgba(255,56,96,.07);  border-color: #ff3860; color: #ff3860; }
+.alert-item.sev-info    { background: rgba(0,255,136,.07);  border-color: #00ff88; color: #00ff88; }
+.alert-time { font-size: 10px; opacity: .55; }
+
+/* ── Tips Box ────────────────────────────────────────────────────────────── */
+.tips-box {
+  padding: 14px 16px;
+  border-top: 1px solid rgba(0,255,136,.08);
+  font-size: 10px; color: rgba(0,255,136,.32); line-height: 1.9;
+}
+.tips-title { letter-spacing: 2px; margin-bottom: 8px; color: rgba(0,255,136,.45); }
+
+/* ── Helpers ─────────────────────────────────────────────────────────────── */
+.text-green  { color: #00ff88; }
+.text-red    { color: #ff3860; }
+.text-yellow { color: #ffdd57; }
+.text-dim    { color: rgba(0,255,136,.4); }
+.mono        { font-family: 'Share Tech Mono', monospace; }
+.small       { font-size: 10px; }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.footer {
+  margin-top: 24px; padding-top: 14px;
+  border-top: 1px solid rgba(0,255,136,.08);
+  text-align: center; font-size: 9px;
+  color: rgba(0,255,136,.25); letter-spacing: 3px;
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideIn  { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+/* ── Tablet: ≤1100px ── */
+@media (max-width: 1100px) {
+  .main-grid            { grid-template-columns: 1fr; }
+  .alerts-panel         { max-height: none; }
+  .alerts-list          { max-height: 300px; }
+}
+
+/* ── Tablet: ≤900px ── */
+@media (max-width: 900px) {
+  .app { padding: 16px; }
+
+  .logo         { font-size: 18px; letter-spacing: 2px; }
+  .logo-sub     { font-size: 8px; letter-spacing: 3px; }
+
+  .header-right { gap: 6px; }
+  .pill         { font-size: 9px; padding: 3px 8px; }
+  .warn-badge   { font-size: 9px; padding: 3px 8px; }
+
+  .stats-grid   { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .stat-value   { font-size: 28px; }
+  .stat-card    { padding: 16px; }
+
+  /* Table: hide MAC + First Seen columns */
+  .device-table th:nth-child(4),
+  .device-table td:nth-child(4),
+  .device-table th:nth-child(6),
+  .device-table td:nth-child(6) { display: none; }
+}
+
+/* ── Mobile: ≤600px ── */
+@media (max-width: 600px) {
+  .app { padding: 12px 10px; }
+
+  /* Header stacks */
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  .header-right {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .warn-badge { width: 100%; text-align: center; }
+  .logo       { font-size: 20px; }
+
+  /* Stats: 2x2 */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .stat-card    { padding: 14px 12px; }
+  .stat-value   { font-size: 26px; }
+  .stat-label   { font-size: 9px; letter-spacing: 1px; }
+  .stat-sub     { font-size: 9px; }
+
+  /* Panel header stacks */
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+  .panel-actions {
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .panel-title  { font-size: 10px; }
+
+  /* Table: show only Type, IP, Hostname, Actions */
+  .device-table th:nth-child(4),
+  .device-table td:nth-child(4),
+  .device-table th:nth-child(6),
+  .device-table td:nth-child(6),
+  .device-table th:nth-child(2),
+  .device-table td:nth-child(2) { display: none; }
+
+  .device-table th,
+  .device-table td { padding: 10px 10px; font-size: 11px; }
+  .hostname { max-width: 120px; }
+
+  /* Device detail */
+  .device-detail { margin: 0 10px 12px; padding: 12px; }
+  .detail-row    { flex-direction: column; gap: 2px; }
+  .detail-row span:first-child { color: rgba(0,255,136,.5); font-size: 10px; }
+
+  /* My IP bar: stacks */
+  .myip-bar {
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 14px;
+    font-size: 9px;
+  }
+
+  /* IP checker */
+  .ip-checker-row {
+    flex-direction: column;
+    padding: 12px 14px;
+    gap: 8px;
+  }
+  .ip-input { font-size: 11px; }
+  .btn      { padding: 8px 12px; font-size: 10px; }
+
+  .ip-result { margin: 0 14px 12px; padding: 12px; }
+  .result-row { flex-direction: column; gap: 2px; align-items: flex-start; }
+
+  /* Alerts */
+  .alerts-list { max-height: 250px; }
+  .alert-item  { font-size: 10px; padding: 8px 10px; }
+
+  /* Tips */
+  .tips-box { font-size: 9px; padding: 12px; }
+
+  /* Footer */
+  .footer { font-size: 8px; letter-spacing: 1px; margin-top: 16px; }
+
+  /* Buttons */
+  .btn-big { font-size: 11px; padding: 10px 24px; letter-spacing: 2px; }
+}
+
+/* ── Very small: ≤380px ── */
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-value { font-size: 22px; }
+  .logo       { font-size: 17px; }
+
+  /* Table: show only IP + Actions, hide type too */
+  .device-table th:nth-child(2),
+  .device-table td:nth-child(2),
+  .device-table th:nth-child(5),
+  .device-table td:nth-child(5) { display: none; }
+
+  .device-table th:nth-child(1),
+  .device-table td:nth-child(1) { display: none; }
+}
+
+/* ── Touch: larger tap targets ── */
+@media (hover: none) and (pointer: coarse) {
+  .btn      { min-height: 36px; padding: 8px 14px; }
+  .chip     { min-height: 30px; padding: 5px 12px; }
+  .btn-link { min-height: 30px; display: inline-flex; align-items: center; }
+  .device-table td { padding: 14px 10px; }
+}
+
