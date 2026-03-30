@@ -74,6 +74,26 @@ body {
   padding: 4px 10px; border-radius: 20px;
   letter-spacing: 1px;
 }
+.demo-badge {
+  font-size: 10px; color: #b388ff;
+  border: 1px solid rgba(179,136,255,.35);
+  background: rgba(179,136,255,.08);
+  padding: 4px 10px; border-radius: 20px;
+  letter-spacing: 1px;
+  animation: demoPulse 2s ease-in-out infinite;
+}
+@keyframes demoPulse {
+  0%,100% { box-shadow: 0 0 0 rgba(179,136,255,0); }
+  50%      { box-shadow: 0 0 10px rgba(179,136,255,.3); }
+}
+.demo-notice {
+  padding: 7px 20px;
+  font-size: 10px;
+  color: rgba(179,136,255,.7);
+  background: rgba(179,136,255,.05);
+  border-bottom: 1px solid rgba(179,136,255,.12);
+  letter-spacing: 0.5px;
+}
 
 /* ── Dot Indicators ─────────────────────────────────────────────────────── */
 .dot {
